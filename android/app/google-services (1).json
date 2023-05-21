@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "618075281023",
+    "project_id": "street-patch",
+    "storage_bucket": "street-patch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618075281023:android:60613e70ea30d817f5514a",
+        "android_client_info": {
+          "package_name": "com.example.streetpatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618075281023-16intttoloe43rp74hecsuk9v4esq8vc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmzTaHKV0c5BRTS_IEaWB_Olmv0toQ1AM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618075281023-16intttoloe43rp74hecsuk9v4esq8vc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
