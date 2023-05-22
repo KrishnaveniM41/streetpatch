@@ -12,7 +12,7 @@ class loginPage extends StatelessWidget {
           child: Center(
         child: Column(children: [
           //streetpatch
-          SizedBox(height: 230),
+          SizedBox(height: 250),
           Text(
             'STREET PATCH',
             style: TextStyle(
