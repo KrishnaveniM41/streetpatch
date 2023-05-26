@@ -1,46 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:streetpatch/screens/authentication/signup/signUp.dart';
 
 // ignore: camel_case_types
-class loginPage extends StatelessWidget {
+class loginPage extends StatefulWidget {
   const loginPage({super.key});
 
   @override
+  State<loginPage> createState() => _loginPageState();
+}
+
+class _loginPageState extends State<loginPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 10, 10, 10),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
-          child: Center(
-        child: Column(children: [
-          //streetpatch
-          SizedBox(height: 250),
-          Text(
-            'STREET PATCH',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Color.fromARGB(255, 238, 224, 228)),
-          ),
-          SizedBox(height: 10),
-          //sign up
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 114, 110, 110),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                'sign up',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
+          child: Container(
+        width: double.infinity,
+        child: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //streetpatch
+
+                Text(
+                  'STREETPATCH',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ]),
+                //sign up
+                TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return signupPage();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Sign up',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                      ),
+                    ))
+              ]),
+        ),
       )),
     );
   }
