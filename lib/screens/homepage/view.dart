@@ -122,6 +122,7 @@ class _viewState extends State<view> {
                 margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
                 child: Row(children: [
+                  SizedBox(height: 80),
                   Text(
                     'Danger level:',
                     style: TextStyle(

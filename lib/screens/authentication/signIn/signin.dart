@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../OTP/OTPSign_IN/OTP_in.dart';
-
 // ignore: camel_case_types
 class signinPage extends StatefulWidget {
   signinPage({super.key});
@@ -125,12 +123,7 @@ class _signinPageState extends State<signinPage> {
                                     foregroundColor: const Color.fromARGB(
                                         255, 248, 253, 255),
                                   ),
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(builder: (context) {
-                                      return OTPsignIn();
-                                    }));
-                                  },
+                                  onPressed: () {},
                                   child: Text(
                                     'Send OTP',
                                     style: TextStyle(

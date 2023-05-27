@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:streetpatch/screens/homepage/feed.dart';
 
 class tocPage extends StatefulWidget {
   const tocPage({super.key});
@@ -43,7 +44,12 @@ class _tocPageState extends State<tocPage> {
                         color: Color.fromARGB(250, 155, 115, 6), width: 3),
                     foregroundColor: const Color.fromARGB(255, 248, 253, 255),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return homePage();
+                    }));
+                  },
                   child: Text(
                     'I Agree',
                     style: TextStyle(

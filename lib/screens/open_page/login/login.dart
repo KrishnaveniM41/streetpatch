@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streetpatch/screens/authentication/signup/signUp.dart';
+import 'package:streetpatch/screens/authentication/signup/phoneAuth.dart';
 
 // ignore: camel_case_types
 class loginPage extends StatefulWidget {
@@ -43,7 +43,7 @@ class _loginPageState extends State<loginPage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return signupPage();
+                            return PhoneAuthPage();
                           },
                         ),
                       );
