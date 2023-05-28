@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:streetpatch/screens/complaints/photosPage.dart';
 
 class complaint extends StatefulWidget {
   const complaint({super.key});
@@ -183,7 +184,12 @@ class _complaintState extends State<complaint> {
                     ),
                     foregroundColor: MaterialStateProperty.all(Colors.black)),
                 //text button
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return photoPage();
+                  }));
+                },
                 icon: Icon(Icons.camera_alt_outlined),
                 label: Text("upload photos"),
               ),
