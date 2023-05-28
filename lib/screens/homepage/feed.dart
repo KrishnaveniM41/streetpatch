@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:streetpatch/screens/homepage/view.dart';
 
+import '../complaints/project.dart';
+
 class homePage extends StatefulWidget {
   const homePage({super.key});
 
@@ -39,7 +41,12 @@ class _homePageState extends State<homePage> {
                                         side: BorderSide(
                                             color: Color.fromARGB(
                                                 255, 51, 54, 240))))),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return complaint();
+                              }));
+                            },
                             child: Text(
                               'Register Complaints',
                               style: TextStyle(
