@@ -10,7 +10,7 @@ class verifyPage extends StatefulWidget {
 class _verifyPageState extends State<verifyPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
           child: Row(

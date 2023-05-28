@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -21,13 +20,13 @@ class _viewState extends State<view> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color.fromARGB(75, 150, 140, 156),
+        color: const Color.fromARGB(75, 150, 140, 156),
         child: SizedBox(
           width: double.infinity,
           height: 600,
           child: Column(children: [
             Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
                     InkWell(
@@ -56,9 +55,9 @@ class _viewState extends State<view> {
                   ],
                 )),
             Container(
-                margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
-                child: Row(children: [
+                child: const Row(children: [
                   Text(
                     'Requester:',
                     style: TextStyle(
@@ -76,9 +75,9 @@ class _viewState extends State<view> {
                   )
                 ])),
             Container(
-                margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
-                child: Row(children: [
+                child: const Row(children: [
                   Text(
                     'Phone number:',
                     style: TextStyle(
@@ -96,20 +95,20 @@ class _viewState extends State<view> {
                   )
                 ])),
             Container(
-                margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
                 child: Column(children: [
                   Container(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         'Description:',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 15,
                             color: Color.fromARGB(248, 255, 255, 255)),
                       )),
-                  SizedBox(width: 10),
-                  Text(
+                  const SizedBox(width: 10),
+                  const Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi bibendum dui vel dapibus pulvinar. Vestibulum gravida leo lorem. Praesent condimentum felis eget lorem elementum, a consequat libero posuere. Sed faucibus metus in gravida aliquam. Mauris id nunc dictum, posuere nibh ut, faucibus dui. ',
                     style: TextStyle(
                         fontWeight: FontWeight.w300,
@@ -117,11 +116,11 @@ class _viewState extends State<view> {
                         color: Color.fromARGB(248, 199, 132, 7)),
                   )
                 ])),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
-                margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
-                child: Row(children: [
+                child: const Row(children: [
                   SizedBox(height: 80),
                   Text(
                     'Danger level:',
@@ -140,7 +139,7 @@ class _viewState extends State<view> {
                   )
                 ])),
             Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Checkbox(
                       value: isChecked,
@@ -149,7 +148,7 @@ class _viewState extends State<view> {
                           isChecked = newBool;
                         });
                       }),
-                  Text(
+                  const Text(
                     'Fake',
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
