@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:streetpatch/screens/authentication/TOC/toc.dart';
-import 'package:streetpatch/screens/homepage/feed.dart';
 
 class AuthClass {
-  final storage = new FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   void storeTokenAndData(UserCredential userCredential) async {
     print("storing token and data");
@@ -22,26 +20,23 @@ class AuthClass {
 
   Future<void> verifyPhoneNumber(
       String phoneNumber, BuildContext context, Function setData) async {
-    PhoneVerificationCompleted verificationCompleted =
-        (PhoneAuthCredential phoneAuthCredential) async {
+    verificationCompleted(PhoneAuthCredential phoneAuthCredential) async {
       showSnackBar(context, "Verification Completed");
-    };
-    PhoneVerificationFailed verificationFailed =
-        (FirebaseAuthException exception) {
+    }
+    verificationFailed(FirebaseAuthException exception) {
       showSnackBar(context, exception.toString());
-    };
-    PhoneCodeSent codeSent = (String verificationID, [forceResendCode]) {
+    }
+    codeSent(String verificationID, [forceResendCode]) {
       showSnackBar(context, "Verification Code sent on the phone number");
       setData(verificationID);
-    };
+    }
 
-    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationID) {
+    codeAutoRetrievalTimeout(String verificationID) {
       showSnackBar(context, "Time out");
-    };
+    }
     try {
       await _auth.verifyPhoneNumber(
-          timeout: Duration(seconds: 60),
+          timeout: const Duration(seconds: 60),
           phoneNumber: phoneNumber,
           verificationCompleted: verificationCompleted,
           verificationFailed: verificationFailed,
@@ -62,7 +57,7 @@ class AuthClass {
           await _auth.signInWithCredential(credential);
       storeTokenAndData(userCredential);
       Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (builder) => tocPage()), (route) => false);
+          MaterialPageRoute(builder: (builder) => const tocPage()), (route) => false);
 
       showSnackBar(context, "logged In");
     } catch (e) {

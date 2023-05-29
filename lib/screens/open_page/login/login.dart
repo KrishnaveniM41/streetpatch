@@ -13,9 +13,9 @@ class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: SafeArea(
-          child: Container(
+          child: SizedBox(
         width: double.infinity,
         child: Center(
           child: Column(
@@ -24,7 +24,7 @@ class _loginPageState extends State<loginPage> {
               children: [
                 //streetpatch
 
-                Text(
+                const Text(
                   'STREETPATCH',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -43,12 +43,12 @@ class _loginPageState extends State<loginPage> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
-                            return PhoneAuthPage();
+                            return const PhoneAuthPage();
                           },
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       'Sign up',
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
