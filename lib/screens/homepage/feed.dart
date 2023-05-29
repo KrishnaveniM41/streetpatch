@@ -76,10 +76,10 @@ class _homePageState extends State<homePage> {
                                             color: Color.fromARGB(
                                                 249, 209, 154, 2))))),
                             onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return SuggestionPageState();
-                              }));
+                            //  Navigator.of(context)
+                             //     .push(MaterialPageRoute(builder: (context) {
+                               // return SuggestionPageState();
+                             // }));
                             },
                             child: Text(
                               'Give \n Suggestions',
