@@ -86,15 +86,18 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
                   children: [
                     const TextSpan(
                       text: "Send OTP again in ",
-                      style: TextStyle(fontSize: 16, color: Colors.yellowAccent),
+                      style:
+                          TextStyle(fontSize: 16, color: Colors.yellowAccent),
                     ),
                     TextSpan(
                       text: "00:$start",
-                      style: const TextStyle(fontSize: 16, color: Colors.pinkAccent),
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.pinkAccent),
                     ),
                     const TextSpan(
                       text: " sec ",
-                      style: TextStyle(fontSize: 16, color: Colors.yellowAccent),
+                      style:
+                          TextStyle(fontSize: 16, color: Colors.yellowAccent),
                     ),
                   ],
                 ),
@@ -132,14 +135,34 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
     );
   }
 
+  Widget otpField() {
+    return OTPTextField(
+      length: 6,
+      width: MediaQuery.of(context).size.width - 10,
+      fieldWidth: 58,
+      otpFieldStyle: OtpFieldStyle(
+        backgroundColor: const Color(0xff1d1d1d),
+        borderColor: Colors.white,
+      ),
+      style: const TextStyle(fontSize: 17, color: Colors.white),
+      textFieldAlignment: MainAxisAlignment.spaceAround,
+      fieldStyle: FieldStyle.underline,
+      onCompleted: (pin) {
+        print("Completed: $pin");
+        otpCodeController.text = pin; // Store the entered OTP in the controller
+      },
+    );
+  }
+
   Future<void> signInWithPhoneNumber() async {
     String smsCode = otpCodeController.text.trim();
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationIdFinal, smsCode: smsCode);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationIdFinal, smsCode: smsCode);
     try {
       await FirebaseAuth.instance.signInWithCredential(credential);
       // Verification completed manually with the entered OTP, handle the signed-in user
       // You can navigate to a new screen or perform further actions
-      
+
       // Navigate to Feed page on successful authentication
       Navigator.push(
         context,
@@ -167,25 +190,6 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
     });
   }
 
-  Widget otpField() {
-    return OTPTextField(
-      length: 6,
-      width: MediaQuery.of(context).size.width - 34,
-      fieldWidth: 58,
-      otpFieldStyle: OtpFieldStyle(
-        backgroundColor: const Color(0xff1d1d1d),
-        borderColor: Colors.white,
-      ),
-      style: const TextStyle(fontSize: 17, color: Colors.white),
-      textFieldAlignment: MainAxisAlignment.spaceAround,
-      fieldStyle: FieldStyle.underline,
-      onCompleted: (pin) {
-        print("Completed: $pin");
-        otpCodeController.text = pin; // Store the entered OTP in the controller
-      },
-    );
-  }
-
   Widget textField() {
     return Container(
       width: MediaQuery.of(context).size.width - 40,
@@ -202,7 +206,8 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
           border: InputBorder.none,
           hintText: "Enter your phone Number",
           hintStyle: const TextStyle(color: Colors.white54, fontSize: 17),
-          contentPadding: const EdgeInsets.symmetric(vertical: 19, horizontal: 8),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 19, horizontal: 8),
           prefixIcon: const Padding(
             padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
             child: Text(
