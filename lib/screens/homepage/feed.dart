@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:streetpatch/screens/homepage/view.dart';
 
 import '../complaints/project.dart';
-import '../suggestions/suggestions.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});
@@ -73,10 +72,15 @@ class _homePageState extends State<homePage> {
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(18),
-                                        side: const BorderSide(
-                                            color:
-                                                Color.fromARGB(249, 209, 154, 2))))),
-                            onPressed: () {},
+                                        side: BorderSide(
+                                            color: Color.fromARGB(
+                                                249, 209, 154, 2))))),
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return SuggestionPageState();
+                              }));
+                            },
                             child: Text(
                               'Give \n Suggestions',
                               style: TextStyle(
