@@ -23,11 +23,9 @@ class AuthClass {
     verificationCompleted(PhoneAuthCredential phoneAuthCredential) async {
       showSnackBar(context, "Verification Completed");
     }
-
     verificationFailed(FirebaseAuthException exception) {
       showSnackBar(context, exception.toString());
     }
-
     codeSent(String verificationID, [forceResendCode]) {
       showSnackBar(context, "Verification Code sent on the phone number");
       setData(verificationID);
@@ -36,7 +34,6 @@ class AuthClass {
     codeAutoRetrievalTimeout(String verificationID) {
       showSnackBar(context, "Time out");
     }
-
     try {
       await _auth.verifyPhoneNumber(
           timeout: const Duration(seconds: 60),
@@ -59,10 +56,8 @@ class AuthClass {
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
       storeTokenAndData(userCredential);
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (builder) => const tocPage()),
-          (route) => false);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (builder) => const tocPage()), (route) => false);
 
       showSnackBar(context, "logged In");
     } catch (e) {

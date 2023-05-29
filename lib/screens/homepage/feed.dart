@@ -76,12 +76,7 @@ class _homePageState extends State<homePage> {
                                         side: const BorderSide(
                                             color:
                                                 Color.fromARGB(249, 209, 154, 2))))),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (context) {
-                                return SuggestionPageState();
-                              }));
-                            },
+                            onPressed: () {},
                             child: Text(
                               'Give \n Suggestions',
                               style: TextStyle(
