@@ -13,12 +13,12 @@ class _complaintState extends State<complaint> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register your complaint"),
+        title: const Text("Register your complaint"),
         centerTitle: true,
         //leading
 
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {},
         ),
       ),
@@ -35,7 +35,7 @@ class _complaintState extends State<complaint> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     //hintText: "enter your name" ,
-                    label: Text("enter your name")),
+                    label: const Text("enter your name")),
               ),
               //------phone number
               TextField(
@@ -44,7 +44,7 @@ class _complaintState extends State<complaint> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    label: Text("phone number")),
+                    label: const Text("phone number")),
               ),
 
               //------any accident occur
@@ -62,7 +62,7 @@ class _complaintState extends State<complaint> {
 
               Container(
                 color: Colors.cyanAccent,
-                child: Row(
+                child: const Row(
                   children: [
                     Text(
                       "any accident occur",
@@ -105,8 +105,8 @@ class _complaintState extends State<complaint> {
                 //    expands:true,
                 //     maxLines:null,
                 decoration: InputDecoration(
-                  label: Text("descrption"),
-                  contentPadding: EdgeInsets.all(80),
+                  label: const Text("descrption"),
+                  contentPadding: const EdgeInsets.all(80),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -124,7 +124,7 @@ class _complaintState extends State<complaint> {
               // ),
               Container(
                 color: Colors.cyanAccent,
-                child: Row(
+                child: const Row(
                   children: [
                     Text(
                       "Danger level",
@@ -178,7 +178,7 @@ class _complaintState extends State<complaint> {
               TextButton.icon(
                 style: ButtonStyle(
                     textStyle: MaterialStateProperty.all(
-                      TextStyle(
+                      const TextStyle(
                         fontSize: 20,
                       ),
                     ),
@@ -187,15 +187,15 @@ class _complaintState extends State<complaint> {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return photoPage();
+                    return const photoPage();
                   }));
                 },
-                icon: Icon(Icons.camera_alt_outlined),
-                label: Text("upload photos"),
+                icon: const Icon(Icons.camera_alt_outlined),
+                label: const Text("upload photos"),
               ),
 
               //------------------------post
-              ElevatedButton(onPressed: () {}, child: Text("post")),
+              ElevatedButton(onPressed: () {}, child: const Text("post")),
             ],
           ),
         ),

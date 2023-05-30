@@ -115,7 +115,7 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
                   ),
                   child: const Center(
                     child: Text(
-                      "Lets Go",
+                      "Login",
                       style: TextStyle(
                         fontSize: 17,
                         color: Color(0xfffbe2ae),
@@ -143,7 +143,7 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
       // Navigate to Feed page on successful authentication
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => homePage()),
+        MaterialPageRoute(builder: (context) => const homePage()),
       );
     } catch (e) {
       // Handle any errors that occur during the sign-in process
@@ -245,6 +245,7 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
         await FirebaseAuth.instance.signInWithCredential(credential);
         // Verification completed automatically, handle the signed-in user
         // You can navigate to a new screen or perform further actions
+        
       },
       verificationFailed: (FirebaseAuthException e) {
         // Handle verification failure, display an error message

@@ -10,6 +10,6 @@ class photoPage extends StatefulWidget {
 class _photoPage extends State<photoPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

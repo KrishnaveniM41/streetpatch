@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:streetpatch/screens/complaints/project.dart';
 
 void main() {
-  runApp(myapp());
+  runApp(const myapp());
 }
 
 class myapp extends StatefulWidget {
@@ -24,10 +24,10 @@ class _myappState extends State<myapp> {
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => complaint()));
+                        MaterialPageRoute(builder: (context) => const complaint()));
                     //Navigator.of(context).push(MaterialPageRoute(builder: (ctx){ return Productscreen();}));
                   },
-                  child: Text(
+                  child: const Text(
                     "complaint register",
                     style: TextStyle(fontSize: 20),
                   )),

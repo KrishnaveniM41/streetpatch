@@ -44,10 +44,10 @@ class _homePageState extends State<homePage> {
                             onPressed: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
-                                return complaint();
+                                return const complaint();
                               }));
                             },
-                            child: Text(
+                            child: const Text(
                               'Register Complaints',
                               style: TextStyle(
                                 color: Color.fromARGB(248, 255, 255, 255),
@@ -72,7 +72,7 @@ class _homePageState extends State<homePage> {
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(18),
-                                        side: BorderSide(
+                                        side: const BorderSide(
                                             color: Color.fromARGB(
                                                 249, 209, 154, 2))))),
                             onPressed: () {
@@ -81,7 +81,7 @@ class _homePageState extends State<homePage> {
                                // return SuggestionPageState();
                              // }));
                             },
-                            child: Text(
+                            child: const Text(
                               'Give \n Suggestions',
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
