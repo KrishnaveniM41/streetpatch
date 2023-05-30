@@ -1,5 +1,5 @@
 # streetpatch
 
-A  Digital Road Cmplaint Platform Project based on Flutter .
+A  Digital Road Complaint Platform Project based on Flutter .
 
 
