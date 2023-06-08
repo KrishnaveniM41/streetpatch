@@ -23,7 +23,7 @@ class _viewState extends State<view> {
         color: const Color.fromARGB(75, 150, 140, 156),
         child: SizedBox(
           width: double.infinity,
-          height: 600,
+          height: 650,
           child: Column(children: [
             Container(
                 padding: const EdgeInsets.all(10),

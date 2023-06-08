@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:streetpatch/screens/homepage/view.dart';
 
 import '../complaints/project.dart';
+import '../suggestions/suggestions.dart';
+import '../trackComplaints/track.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});
@@ -73,13 +75,13 @@ class _homePageState extends State<homePage> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(18),
                                         side: const BorderSide(
-                                            color: Color.fromARGB(
-                                                249, 209, 154, 2))))),
+                                            color:
+                                                Color.fromARGB(249, 209, 154, 2))))),
                             onPressed: () {
-                            //  Navigator.of(context)
-                             //     .push(MaterialPageRoute(builder: (context) {
-                               // return SuggestionPageState();
-                             // }));
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return SuggPage();
+                              }));
                             },
                             child: const Text(
                               'Give \n Suggestions',
@@ -111,7 +113,12 @@ class _homePageState extends State<homePage> {
                                     side: const BorderSide(
                                         color: Color.fromARGB(
                                             255, 155, 15, 15))))),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return trackpage();
+                          }));
+                        },
                         child: const Text(
                           'Track Your complaint ',
                           style: TextStyle(
