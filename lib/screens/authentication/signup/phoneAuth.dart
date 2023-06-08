@@ -86,15 +86,18 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
                   children: [
                     const TextSpan(
                       text: "Send OTP again in ",
-                      style: TextStyle(fontSize: 16, color: Colors.yellowAccent),
+                      style:
+                          TextStyle(fontSize: 16, color: Colors.yellowAccent),
                     ),
                     TextSpan(
                       text: "00:$start",
-                      style: const TextStyle(fontSize: 16, color: Colors.pinkAccent),
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.pinkAccent),
                     ),
                     const TextSpan(
                       text: " sec ",
-                      style: TextStyle(fontSize: 16, color: Colors.yellowAccent),
+                      style:
+                          TextStyle(fontSize: 16, color: Colors.yellowAccent),
                     ),
                   ],
                 ),
@@ -134,34 +137,36 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
 
   Future<void> signInWithPhoneNumber() async {
     String smsCode = otpCodeController.text.trim();
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationIdFinal, smsCode: smsCode);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationIdFinal, smsCode: smsCode);
     try {
       await FirebaseAuth.instance.signInWithCredential(credential);
       // Verification completed manually with the entered OTP, handle the signed-in user
       // You can navigate to a new screen or perform further actions
-            // Store the user's phone number and user ID in Firestore
+      // Store the user's phone number and user ID in Firestore
       String phoneNumber = phoneController.text.trim();
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
-    // Query the user collection to check if a document with the same phone number exists
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('users')
-        .where('phone_number', isEqualTo: phoneNumber)
-        .get();
+      // Query the user collection to check if a document with the same phone number exists
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('phone_number', isEqualTo: phoneNumber)
+          .get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      // Document already exists for this phone number
-      print('User with the same phone number already exists!');
-      // Handle the duplicate sign-in attempt or perform any other necessary action
-    } else {
-      // Document does not exist for this phone number, create a new document
-      CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
-      await usersCollection.doc(userId).set({
-        'phone_number': phoneNumber,
-        'user_id': userId,
-      });
-      print('New user document created!');
-    }
-
+      if (querySnapshot.docs.isNotEmpty) {
+        // Document already exists for this phone number
+        print('User with the same phone number already exists!');
+        // Handle the duplicate sign-in attempt or perform any other necessary action
+      } else {
+        // Document does not exist for this phone number, create a new document
+        CollectionReference usersCollection =
+            FirebaseFirestore.instance.collection('users');
+        await usersCollection.doc(userId).set({
+          'phone_number': phoneNumber,
+          'user_id': userId,
+        });
+        print('New user document created!');
+      }
 
       // Navigate to Feed page on successful authentication
       Navigator.push(
@@ -193,7 +198,7 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
   Widget otpField() {
     return OTPTextField(
       length: 6,
-      width: MediaQuery.of(context).size.width - 34,
+      width: MediaQuery.of(context).size.width - 10,
       fieldWidth: 58,
       otpFieldStyle: OtpFieldStyle(
         backgroundColor: const Color(0xff1d1d1d),
@@ -225,7 +230,8 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
           border: InputBorder.none,
           hintText: "Enter your phone Number",
           hintStyle: const TextStyle(color: Colors.white54, fontSize: 17),
-          contentPadding: const EdgeInsets.symmetric(vertical: 19, horizontal: 8),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 19, horizontal: 8),
           prefixIcon: const Padding(
             padding: EdgeInsets.symmetric(vertical: 14, horizontal: 15),
             child: Text(
@@ -268,7 +274,6 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
         await FirebaseAuth.instance.signInWithCredential(credential);
         // Verification completed automatically, handle the signed-in user
         // You can navigate to a new screen or perform further actions
-        
       },
       verificationFailed: (FirebaseAuthException e) {
         // Handle verification failure, display an error message

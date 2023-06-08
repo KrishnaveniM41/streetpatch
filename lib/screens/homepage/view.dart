@@ -23,7 +23,7 @@ class _viewState extends State<view> {
         color: const Color.fromARGB(75, 150, 140, 156),
         child: SizedBox(
           width: double.infinity,
-          height: 650,
+          height: 580,
           child: Column(children: [
             Container(
                 padding: const EdgeInsets.all(10),
@@ -107,7 +107,7 @@ class _viewState extends State<view> {
                             fontSize: 15,
                             color: Color.fromARGB(248, 255, 255, 255)),
                       )),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 10, height: 10),
                   const Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi bibendum dui vel dapibus pulvinar. Vestibulum gravida leo lorem. Praesent condimentum felis eget lorem elementum, a consequat libero posuere. Sed faucibus metus in gravida aliquam. Mauris id nunc dictum, posuere nibh ut, faucibus dui. ',
                     style: TextStyle(
@@ -116,47 +116,49 @@ class _viewState extends State<view> {
                         color: Color.fromARGB(248, 199, 132, 7)),
                   )
                 ])),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             Container(
                 margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
-                child: const Row(children: [
-                  SizedBox(height: 80),
-                  Text(
-                    'Danger level:',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 24,
-                        color: Color.fromARGB(248, 255, 255, 255)),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'High',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 24,
-                        color: Color.fromARGB(248, 255, 21, 4)),
-                  )
-                ])),
-            Container(
-                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Checkbox(
-                      value: isChecked,
-                      onChanged: (newBool) {
-                        setState(() {
-                          isChecked = newBool;
-                        });
-                      }),
-                  const Text(
-                    'Fake',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w300,
-                      fontSize: 20,
-                      color: Color.fromARGB(248, 255, 255, 255),
-                    ),
-                  )
-                ]))
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(height: 80),
+                      Text(
+                        'Danger level:',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20,
+                            color: Color.fromARGB(248, 255, 255, 255)),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'High',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color: Color.fromARGB(248, 255, 21, 4)),
+                      ),
+                      SizedBox(width: 45),
+                      Container(
+                          child: Row(children: [
+                        Checkbox(
+                            value: isChecked,
+                            onChanged: (newBool) {
+                              setState(() {
+                                isChecked = newBool;
+                              });
+                            }),
+                        const Text(
+                          'Fake',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 15,
+                            color: Color.fromARGB(248, 255, 255, 255),
+                          ),
+                        )
+                      ]))
+                    ])),
           ]),
         ));
   }
