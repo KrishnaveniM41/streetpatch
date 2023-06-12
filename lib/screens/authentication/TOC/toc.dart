@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:streetpatch/screens/homepage/feed.dart';
+
+import '../../homepage/feed.dart';
 
 class tocPage extends StatefulWidget {
   const tocPage({super.key});

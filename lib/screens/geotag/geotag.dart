@@ -128,6 +128,19 @@ class GeotagPage {
     await picturesCollection.add(pictureData);
   }
 
+  Future<void> addPictureToSuggestion(
+    String suggestionId,
+    Map<String, dynamic> pictureData,
+  ) async {
+    CollectionReference suggestionsCollection =
+        FirebaseFirestore.instance.collection('suggestions');
+    DocumentReference suggestionsRef = suggestionsCollection.doc(suggestionId);
+    CollectionReference picturesCollection =
+        suggestionsRef.collection('pictures');
+
+    await picturesCollection.add(pictureData);
+  }
+
   Future<void> addImageToFirestore(
     String imagePath,
     String address,
@@ -177,8 +190,10 @@ class GeotagPage {
     User? user = auth.currentUser;
     String? userId = user?.uid;
 
-     final CollectionReference complaintsCollection =
-     FirebaseFirestore.instance.collection('users').doc(userId).collection('complaints');
+    final CollectionReference complaintsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('complaints');
     DocumentReference complaintRef = complaintsCollection.doc(complaintId);
     CollectionReference picturesSubCollection =
         complaintRef.collection('pictures');
@@ -188,8 +203,55 @@ class GeotagPage {
       String pictureId = pictureids[i];
       print(pictureId);
 
-      DocumentSnapshot pictureSnapshot =
-          await FirebaseFirestore.instance.collection('pictures').doc(pictureId).get();
+      DocumentSnapshot pictureSnapshot = await FirebaseFirestore.instance
+          .collection('pictures')
+          .doc(pictureId)
+          .get();
+      if (pictureSnapshot.exists) {
+        Map<String, dynamic> pictureData =
+            pictureSnapshot.data() as Map<String, dynamic>;
+
+        await picturesSubCollection.add(pictureData);
+        print('Picture added to subcollection');
+      } else {
+        print('Picture does not exist');
+      }
+    }
+
+    for (int i = 0; i < picDocRef.length; i++) {
+      DocumentReference picDocReference = picDocRef[i];
+      print(picDocReference);
+      await picDocReference.delete();
+      print("Deleted document reference");
+    }
+
+    print("Reached the last part of this function");
+  }
+
+  Future<void> linkPicturesToSuggestion(String suggestionId) async {
+    print("GOT suggestion id!!!!!!!!");
+    print(suggestionId);
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    String? userId = user?.uid;
+
+    final CollectionReference suggestionsCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('suggestions');
+    DocumentReference suggestionsRef = suggestionsCollection.doc(suggestionId);
+    CollectionReference picturesSubCollection =
+        suggestionsRef.collection('pictures');
+    print("reached here!!!!");
+
+    for (int i = 0; i < pictureids.length; i++) {
+      String pictureId = pictureids[i];
+      print(pictureId);
+
+      DocumentSnapshot pictureSnapshot = await FirebaseFirestore.instance
+          .collection('pictures')
+          .doc(pictureId)
+          .get();
       if (pictureSnapshot.exists) {
         Map<String, dynamic> pictureData =
             pictureSnapshot.data() as Map<String, dynamic>;

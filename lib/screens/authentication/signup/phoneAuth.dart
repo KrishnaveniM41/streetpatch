@@ -6,7 +6,8 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../services/Auth_Service.dart';
-import '../../homepage/feed.dart';
+
+import '../../homepage/home.dart';
 
 class PhoneAuthPage extends StatefulWidget {
   const PhoneAuthPage({Key? key}) : super(key: key);
@@ -171,7 +172,7 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
       // Navigate to Feed page on successful authentication
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const homePage()),
+        MaterialPageRoute(builder: (context) => const Home()),
       );
     } catch (e) {
       // Handle any errors that occur during the sign-in process

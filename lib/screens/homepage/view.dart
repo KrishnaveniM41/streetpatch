@@ -1,8 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:streetpatch/screens/homepage/CarouselSliderFromFirestore.dart';
 
 class view extends StatefulWidget {
-  const view({super.key});
+  final snap;
+  const view({
+    Key? key,
+    required this.snap,
+  }) : super(key: key);
 
   @override
   State<view> createState() => _viewState();
@@ -20,44 +25,19 @@ class _viewState extends State<view> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: const Color.fromARGB(75, 150, 140, 156),
+        color: Color.fromARGB(255, 0, 0, 0),
         child: SizedBox(
           width: double.infinity,
-          height: 580,
           child: Column(children: [
+            SizedBox(height: 50),
             Container(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          print(currentIndex);
-                        },
-                        child: CarouselSlider(
-                            items: imageList
-                                .map((item) => Image.asset(
-                                      item['image_path'],
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                    ))
-                                .toList(),
-                            carouselController: carouselController,
-                            options: CarouselOptions(
-                                scrollPhysics: const BouncingScrollPhysics(),
-                                autoPlay: true,
-                                aspectRatio: 2,
-                                viewportFraction: 1,
-                                onPageChanged: ((index, reason) {
-                                  setState(() {
-                                    currentIndex = index;
-                                  });
-                                }))))
-                  ],
-                )),
+              child: MyCarouselSlider(),
+            ),
             Container(
                 margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
-                child: const Row(children: [
+                child: Row(children: [
+                  SizedBox(height: 10),
                   Text(
                     'Requester:',
                     style: TextStyle(
@@ -67,7 +47,7 @@ class _viewState extends State<view> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Krishnaveni',
+                    widget.snap['preferred_username'],
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 15,
@@ -77,7 +57,7 @@ class _viewState extends State<view> {
             Container(
                 margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
-                child: const Row(children: [
+                child: Row(children: [
                   Text(
                     'Phone number:',
                     style: TextStyle(
@@ -87,7 +67,7 @@ class _viewState extends State<view> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    '1234567895',
+                    widget.snap['preferred_phone'],
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 15,
@@ -108,22 +88,20 @@ class _viewState extends State<view> {
                             color: Color.fromARGB(248, 255, 255, 255)),
                       )),
                   const SizedBox(width: 10, height: 10),
-                  const Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi bibendum dui vel dapibus pulvinar. Vestibulum gravida leo lorem. Praesent condimentum felis eget lorem elementum, a consequat libero posuere. Sed faucibus metus in gravida aliquam. Mauris id nunc dictum, posuere nibh ut, faucibus dui. ',
+                  Text(
+                    widget.snap['description'],
                     style: TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 18.5,
                         color: Color.fromARGB(248, 199, 132, 7)),
                   )
                 ])),
-            const SizedBox(height: 50),
             Container(
                 margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 alignment: Alignment.topLeft,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(height: 80),
                       Text(
                         'Danger level:',
                         style: TextStyle(
@@ -133,7 +111,7 @@ class _viewState extends State<view> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        'High',
+                        widget.snap['dangerlevel'],
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 20,
@@ -159,6 +137,13 @@ class _viewState extends State<view> {
                         )
                       ]))
                     ])),
+            const Divider(
+              height: 10,
+              thickness: 2,
+              indent: 10,
+              endIndent: 0,
+              color: Color.fromARGB(255, 145, 12, 122),
+            )
           ]),
         ));
   }
