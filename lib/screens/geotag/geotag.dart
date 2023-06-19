@@ -55,6 +55,10 @@ class GeotagPage {
     print(address);
     print("heloooooooooooo");
     print(time);
+// Replace with your Plus Code
+ 
+  print(address);
+
 
     await uploadImageToStorage(
       imagePath,
