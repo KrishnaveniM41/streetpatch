@@ -90,10 +90,11 @@ class _homePageState extends State<homePage> {
 
                             final pictureDocs = snapshot.data!.docs;
                             final pictureDataList = pictureDocs
-                            .map((picture) =>
-                                    picture['imageURL'] as String)
+                                .map((picture) => picture['imageURL'] as String)
                                 .toList();
-print(pictureDataList);print("here");
+
+                            print(pictureDataList);
+                            print("here");
                             return Column(
                               children: [
                                 PatchView(
