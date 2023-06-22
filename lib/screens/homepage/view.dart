@@ -173,7 +173,7 @@ class _PatchViewState extends State<PatchView> {
           ),
           IconButton(
             onPressed: () {
-              openGoogleMaps(latitude, longitude);
+             // openGoogleMaps(latitude, longitude);
             },
             color: Color.fromARGB(255, 240, 105, 123),
             highlightColor: Colors.amberAccent, //<-- SEE HERE
