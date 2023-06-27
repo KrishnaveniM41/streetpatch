@@ -6,6 +6,8 @@ import 'package:streetpatch/screens/homepage/feed.dart';
 import 'package:streetpatch/screens/suggestions/suggestions.dart';
 import 'package:streetpatch/screens/trackComplaints/track.dart';
 
+import '../trackComplaints/treakfeed.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -33,12 +35,13 @@ class _Home extends State<Home> {
     )
   ];
 
-  int index = 1;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(0, 0, 0, 0),
       bottomNavigationBar: CurvedNavigationBar(
+        color: const Color.fromARGB(255, 71, 69, 69),
         items: items,
         index: index,
         onTap: (selctedIndex) {
@@ -47,7 +50,7 @@ class _Home extends State<Home> {
           });
         },
         height: 60,
-        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
         animationDuration: const Duration(milliseconds: 300),
         // animationCurve: ,
       ),
@@ -75,7 +78,7 @@ Widget getSelectedWidget({required int index}) {
       break;
 
     default:
-      widget = const trackpage();
+      widget = const TrackFeedPage();
       break;
   }
   return widget;

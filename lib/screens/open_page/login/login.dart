@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:streetpatch/screens/authentication/signup/phoneAuth.dart';
 
 // ignore: camel_case_types
@@ -23,16 +24,22 @@ class _loginPageState extends State<loginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //streetpatch
-
-                const Text(
-                  'STREETPATCH',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Animate(
+                  effects: [FadeEffect(), SlideEffect()],
+                  child: Text(
+                    'STREETPATCH',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                      .animate()
+                      .fade(duration: 2000.ms)
+                      .slideY(curve: Curves.easeIn),
                 ),
+
                 //sign up
                 TextButton(
                     style: ButtonStyle(

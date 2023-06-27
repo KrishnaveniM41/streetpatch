@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../homepage/feed.dart';
+import '../../homepage/dashboard.dart';
 
 class tocPage extends StatefulWidget {
   const tocPage({super.key});
@@ -48,7 +48,7 @@ class _tocPageState extends State<tocPage> {
                   onPressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (context) {
-                      return const homePage();
+                      return dashboard();
                     }));
                   },
                   child: const Text(

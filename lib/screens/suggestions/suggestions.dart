@@ -210,7 +210,7 @@ class _SuggPageState extends State<SuggPage> {
                               hintText: "Give descrption about your suggestion",
                               hintStyle: TextStyle(
                                 color: Colors.black,
-                                fontSize: 17,
+                                fontSize: 15,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w400,
                               ),

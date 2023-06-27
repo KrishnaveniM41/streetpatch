@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../services/Auth_Service.dart';
 
 import '../../homepage/home.dart';
+import '../TOC/toc.dart';
 
 class PhoneAuthPage extends StatefulWidget {
   const PhoneAuthPage({Key? key}) : super(key: key);
@@ -172,7 +173,7 @@ class _PhoneAuthPageState extends State<PhoneAuthPage> {
       // Navigate to Feed page on successful authentication
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Home()),
+        MaterialPageRoute(builder: (context) => const tocPage()),
       );
     } catch (e) {
       // Handle any errors that occur during the sign-in process
