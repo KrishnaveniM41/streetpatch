@@ -5,7 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:streetpatch/screens/homepage/CarouselSliderFromFirestore.dart';
 
 class trackpage extends StatefulWidget {
-<<<<<<< HEAD
   final dynamic snap;
   final List<String> pictureDataList;
   final dynamic latitude;
@@ -32,12 +31,6 @@ class trackpage extends StatefulWidget {
   }) : super(key: key);
 
   _trackpageState createState() => _trackpageState();
-=======
-  const trackpage({super.key});
-
-  @override
-  State<trackpage> createState() => _trackpageState();
->>>>>>> bb3492b76dd35b0dfe45b4034d976108b0183237
 }
 
 class _trackpageState extends State<trackpage> {

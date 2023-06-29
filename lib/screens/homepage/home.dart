@@ -4,10 +4,6 @@ import 'package:streetpatch/screens/complaints/complaint.dart';
 import 'package:streetpatch/screens/homepage/feed.dart';
 import 'package:streetpatch/screens/trackComplaints/treakfeed.dart';
 import 'package:streetpatch/screens/suggestions/suggestions.dart';
-<<<<<<< HEAD
-=======
-import 'package:streetpatch/screens/trackComplaints/track.dart';
->>>>>>> bb3492b76dd35b0dfe45b4034d976108b0183237
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,7 +17,6 @@ class _Home extends State<Home> {
     Icon(
       Icons.home,
       size: 25,
-    
     ),
     Icon(
       Icons.add,
@@ -80,7 +75,7 @@ Widget getSelectedWidget({required int index}) {
       break;
 
     default:
-      widget = const trackpage();
+      widget = const TrackFeedPage();
       break;
   }
   return widget;
