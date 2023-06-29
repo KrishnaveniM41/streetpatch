@@ -2,11 +2,8 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:streetpatch/screens/complaints/complaint.dart';
 import 'package:streetpatch/screens/homepage/feed.dart';
-
+import 'package:streetpatch/screens/trackComplaints/treakfeed.dart';
 import 'package:streetpatch/screens/suggestions/suggestions.dart';
-import 'package:streetpatch/screens/trackComplaints/trackfeed.dart';
-
-import '../trackComplaints/treakfeed.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,6 +17,7 @@ class _Home extends State<Home> {
     Icon(
       Icons.home,
       size: 25,
+    
     ),
     Icon(
       Icons.add,
@@ -41,7 +39,7 @@ class _Home extends State<Home> {
     return Scaffold(
       backgroundColor: Color.fromARGB(0, 0, 0, 0),
       bottomNavigationBar: CurvedNavigationBar(
-        color: const Color.fromARGB(255, 71, 69, 69),
+        color: Color.fromARGB(235, 180, 180, 180),
         items: items,
         index: index,
         onTap: (selctedIndex) {

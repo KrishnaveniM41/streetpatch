@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../geotag/geotag.dart';
 import 'controller.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,9 @@ class _complaintState extends State<complaint> {
   String? _radioVal;
   String? level;
   String complaintId = "";
-  //int fakeCount = 0;
+  Timer? timer;
+  int countdownDuration = 30;
+  bool isButtonDisabled = false;
 
   GeotagPage geotag = GeotagPage();
 
@@ -62,9 +66,13 @@ class _complaintState extends State<complaint> {
         await complaintsCollection.add(complaintData);
 
     complaintId = newComplaintRef.id;
-    //fakeCount++;
 
     await geotag.linkPicturesToComplaint(complaintId);
+  }
+
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   var image;
@@ -73,20 +81,44 @@ class _complaintState extends State<complaint> {
     image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (imagearray.length < 3) {
       imagearray.add(image);
+      countdownDuration = 30;
+      isButtonDisabled = true;
     } else {
-      const snackBar = SnackBar(content: Text('limit has been reached'));
+      final snackBar = SnackBar(
+        content: Text('The limit has been reached'),
+      );
 
-// Find the ScaffoldMessenger in the widget tree
-// and use it to show a SnackBar.
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
-    // imagearray.add(image);
-    setState(() {
-      imagearray;
+    setState(() {});
+    startTimer();
+  }
+
+  void startTimer() {
+    timer?.cancel();
+
+    timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      if (countdownDuration == 0) {
+        timer.cancel();
+        setState(() {
+          isButtonDisabled = false;
+        });
+      } else {
+        setState(() {
+          countdownDuration--;
+        });
+      }
     });
-    //passing the image path for geotagging and storage
-    // GeotagPage geotag= GeotagPage();
-    await geotag.geotagImage(image!.path);
+  }
+
+  Future<void> onUploadButtonPressed() async {
+    if (!isButtonDisabled) {
+      opengallary();
+
+      //passing the image path for geotagging and storage
+      // GeotagPage geotag= GeotagPage();
+      await geotag.geotagImage(image!.path);
+    }
   }
 
   @override
@@ -96,360 +128,394 @@ class _complaintState extends State<complaint> {
     // update the UI depending on below variable values
     final isInit = isAnimating || state == ButtonState.init;
     final isDone = state == ButtonState.completed;
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 241, 238, 238),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(235, 180, 180, 180),
 
-          //leading
-          leading: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              )),
+        //leading
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            )),
 
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: Color.fromARGB(136, 125, 93, 25)),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(200),
-                bottomRight: Radius.circular(200)),
-          ),
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(150),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          " Register your complaint ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w900),
-                        ),
-                        CircleAvatar(
-                          child: Icon(
-                            Icons.app_registration,
-                            color: Colors.white,
-                          ),
-                          radius: 20,
-                          backgroundColor: Colors.black,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 100,
-                    )
-                  ],
-                ),
-              )),
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(color: Color.fromARGB(136, 125, 93, 25)),
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(200),
+              bottomRight: Radius.circular(200)),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Center(
-            child: ListView(
-              children: [
-                //--------------- name-----------------------------------------------------------
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: complaintername,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "Enter your preferred username(optional)",
-                      hintStyle: TextStyle(
-                          fontStyle: FontStyle.italic, color: Colors.black),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(40),
+        bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(150),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        " Register your complaint ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w900),
                       ),
-                    ),
-                  ),
-                ),
-                //---------------phone number-----------------------------------------------------
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: complainterphone,
-                    keyboardType: TextInputType.number,
-                    maxLength: 10,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      // contentPadding: EdgeInsets.all(10),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      hintText: "Enter your phone number(optional)",
-                      hintStyle: TextStyle(
-                          fontStyle: FontStyle.italic, color: Colors.black),
-                    ),
-                  ),
-                ),
-
-                //---------------------------any accident occur---------------------------------------------
-
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
-                    height: 60,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Row(
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              ' Any accident occur:  ',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Radio(
-                              value: "yes",
-                              groupValue: _radioVal,
-                              onChanged: (String? value) {
-                                if (value != null) {
-                                  setState(() {
-                                    _radioVal = value;
-                                  });
-                                }
-                              },
-                            ),
-                            const Text(
-                              'Yes',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Radio(
-                              value: "no",
-                              groupValue: _radioVal,
-                              onChanged: (String? value) {
-                                if (value != null) {
-                                  setState(() {
-                                    _radioVal = value;
-                                  });
-                                }
-                              },
-                            ),
-                            const Text(
-                              'No ',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
+                      CircleAvatar(
+                        child: Icon(
+                          Icons.app_registration,
+                          color: Colors.white,
                         ),
-                      ],
+                        radius: 20,
+                        backgroundColor: Colors.black,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 100,
+                  )
+                ],
+              ),
+            )),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Center(
+          child: ListView(
+            children: [
+//--------------- name-----------------------------------------------------------
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: complaintername,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: "Enter your preferred username",
+                    hintStyle: TextStyle(
+                        fontStyle: FontStyle.italic, color: Colors.black),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
                     ),
                   ),
                 ),
+              ),
+              //---------------phone number-----------------------------------------------------
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: complainterphone,
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    // contentPadding: EdgeInsets.all(10),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    hintText: "Enter your phone number(optional)",
+                    hintStyle: TextStyle(
+                        fontStyle: FontStyle.italic, color: Colors.black),
+                  ),
+                ),
+              ),
 
-//--------------------------------------------descrption--------------------------------
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: formkey,
-                      child: Column(
+//---------------------------any accident occur---------------------------------------------
+
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  height: 60,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Row(
+                    children: [
+                      Row(
                         children: [
-                          TextFormField(
-                            controller: complainterdescrption,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "manditory";
+                          const Text(
+                            ' Any accident occur:  ',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                          Radio(
+                            value: "yes",
+                            groupValue: _radioVal,
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                setState(() {
+                                  _radioVal = value;
+                                });
                               }
                             },
-                            //  textAlignVertical: TextAlignVertical.top,
-                            //   expands: true,
-                            //   maxLines: null,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: "Give descrption about your complaint",
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              contentPadding: EdgeInsets.all(50),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              ),
+                          ),
+                          const Text(
+                            'Yes',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                          Radio(
+                            value: "no",
+                            groupValue: _radioVal,
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                setState(() {
+                                  _radioVal = value;
+                                });
+                              }
+                            },
+                          ),
+                          const Text(
+                            'No ',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 17,
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
 
-                //--------------danger level-------------------------------------------
-
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 80,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                    ),
+//--------------------------------------------descrption--------------------------------
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: formkey,
                     child: Column(
                       children: [
-                        const Text(
-                          'Danger level:',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Colors.black,
-                            fontSize: 17,
+                        TextFormField(
+                          controller: complainterdescrption,
+                          maxLines: 7,
+                          keyboardType: TextInputType.multiline,
+
+                          //  textAlignVertical: TextAlignVertical.top,
+                          //   expands: true,
+                          //   maxLines: null,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "Give descrption about your complaint",
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            contentPadding: EdgeInsets.all(50),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                            ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Radio(
-                              value: "low",
-                              groupValue: level,
-                              onChanged: (String? value) {
-                                if (value != null) {
-                                  setState(() {
-                                    level = value;
-                                  });
-                                }
-                              },
-                            ),
-                            const Text(
-                              'low',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Radio(
-                              value: "medium",
-                              groupValue: level,
-                              onChanged: (String? value) {
-                                if (value != null) {
-                                  setState(() {
-                                    level = value;
-                                  });
-                                }
-                              },
-                            ),
-                            const Text(
-                              'medium ',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Radio(
-                              value: "high",
-                              groupValue: level,
-                              onChanged: (String? value) {
-                                if (value != null) {
-                                  setState(() {
-                                    level = value;
-                                  });
-                                }
-                              },
-                            ),
-                            const Text(
-                              'high ',
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
                   ),
                 ),
+              ),
 
-                // --------------------------upload photo----------------------------------------------------------
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                      child: Column(
+              //--------------danger level-------------------------------------------
+
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  height: 80,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Column(
                     children: [
-                      ElevatedButton.icon(
-                          onPressed: () {
-                            opengallary();
-                          },
-                          icon: Icon(Icons.camera_alt_outlined),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black),
-                          label: Text(
-                            "upload photo",
+                      const Text(
+                        'Danger level:',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: "low",
+                            groupValue: level,
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                setState(() {
+                                  level = value;
+                                });
+                              }
+                            },
+                          ),
+                          const Text(
+                            'low',
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
-                              color: Colors.white,
-                              fontSize: 18,
+                              color: Colors.black,
+                              fontSize: 17,
                             ),
-                          )),
-                      Container(
-                        height: MediaQuery.of(context).size.height *
-                            .2, //images height
-                        // decoration: BoxDecoration(border: Border.all(width: 1)),
-                        padding: EdgeInsets.all(5),
-                        child: imagearray.isEmpty
-                            ? Center(child: Text("no image"))
-                            : GridView.count(
-                                crossAxisCount: 3,
-                                children:
-                                    List.generate(imagearray.length, (index) {
-                                  var img = imagearray[index];
-                                  //  return Container(child: Image.file(img));
-                                  return Container(
-                                      child: Image.file(File(img!.path)));
-                                }),
-                              ),
+                          ),
+                          Radio(
+                            value: "medium",
+                            groupValue: level,
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                setState(() {
+                                  level = value;
+                                });
+                              }
+                            },
+                          ),
+                          const Text(
+                            'medium ',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                          Radio(
+                            value: "high",
+                            groupValue: level,
+                            onChanged: (String? value) {
+                              if (value != null) {
+                                setState(() {
+                                  level = value;
+                                });
+                              }
+                            },
+                          ),
+                          const Text(
+                            'high ',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  )),
+                  ),
                 ),
+              ),
 
-                //------------------------post---------------------------------------------------------------------------
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(40),
-                  child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      onEnd: () => setState(() {
-                            isAnimating = !isAnimating;
-                          }),
-                      width: state == ButtonState.init ? buttonWidth : 70,
-                      height: 60,
-                      // If Button State is Submiting or Completed  show 'buttonCircular' widget as below
-                      child:
-                          isInit ? buildButton() : circularContainer(isDone)),
+// --------------------------upload photo----------------------------------------------------------
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        'Wait for $countdownDuration seconds to take next photo',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w200,
+                            color: Color.fromARGB(255, 243, 57, 57)),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed:
+                            isButtonDisabled ? null : onUploadButtonPressed,
+                        icon: Icon(Icons.camera_alt_outlined),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                        label: const Text(
+                          "Upload Photo",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w100,
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height *
+                              .2, // images height
+                          padding: EdgeInsets.all(5),
+                          child: imagearray.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                    "No image",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w100,
+                                    ),
+                                  ),
+                                )
+                              : GridView.count(
+                                  crossAxisCount: 3,
+                                  children: List.generate(
+                                    imagearray.length,
+                                    (index) {
+                                      var img = imagearray[index];
+                                      return Container(
+                                        child: Image.file(File(img!.path)),
+                                      );
+                                    },
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+
+//------------------------post---------------------------------------------------------------------------
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(40),
+                child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    onEnd: () => setState(() {
+                          isAnimating = !isAnimating;
+                        }),
+                    width: state == ButtonState.init ? buttonWidth : 70,
+                    height: 60,
+                    // If Button State is Submiting or Completed  show 'buttonCircular' widget as below
+                    child: isInit ? buildButton() : circularContainer(isDone)),
+              ),
+            ],
           ),
         ),
       ),
@@ -469,11 +535,11 @@ class _complaintState extends State<complaint> {
           });
 
           //await 2 sec // you need to implement your server response here.
-          await Future.delayed(Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: 30));
           setState(() {
             state = ButtonState.completed;
           });
-          await Future.delayed(Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: 30));
           setState(() {
             state = ButtonState.init;
           });

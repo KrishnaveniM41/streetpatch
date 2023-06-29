@@ -30,16 +30,10 @@ class trackpage extends StatefulWidget {
     required this.address,
   }) : super(key: key);
 
-  const trackpage({
-    Key? key,
-    required this.snap,
-    required this.pictureDataList,
-  }) : super(key: key);
-  @override
-  State<trackpage> createState() => _TrackPageState();
+  _trackpageState createState() => _trackpageState();
 }
 
-class _TrackPageState extends State<trackpage> {
+class _trackpageState extends State<trackpage> {
   final CarouselController carouselController = CarouselController();
 
   @override

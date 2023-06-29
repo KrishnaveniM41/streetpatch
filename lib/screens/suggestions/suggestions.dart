@@ -1,4 +1,5 @@
-// SUGGESTION.DART
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../complaints/controller.dart';
 import 'dart:convert';
@@ -14,6 +15,11 @@ import '../geotag/geotag.dart';
 
 import '../homepage/feed.dart';
 
+bool isAnimating = true;
+
+//enum to declare 3 state of button
+enum ButtonState { init, submitting, completed }
+
 class SuggPage extends StatefulWidget {
   const SuggPage({super.key});
 
@@ -25,7 +31,11 @@ class _SuggPageState extends State<SuggPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController phonenoController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  ButtonState state = ButtonState.init;
   String suggestionId = "";
+  Timer? timer;
+  int countdownDuration = 30;
+  bool isButtonDisabled = false;
 
   GeotagPage geotag = GeotagPage();
 
@@ -57,22 +67,59 @@ class _SuggPageState extends State<SuggPage> {
   List imagearray = [];
   opengallary() async {
     image = await ImagePicker().pickImage(source: ImageSource.camera);
-    imagearray.add(image);
-    setState(() {
-      imagearray;
+    if (imagearray.length < 3) {
+      imagearray.add(image);
+      countdownDuration = 30;
+      isButtonDisabled = true;
+    } else {
+      final snackBar = SnackBar(
+        content: Text('The limit has been reached'),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    setState(() {});
+    startTimer();
+  }
+
+  void startTimer() {
+    timer?.cancel();
+
+    timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      if (countdownDuration == 0) {
+        timer.cancel();
+        setState(() {
+          isButtonDisabled = false;
+        });
+      } else {
+        setState(() {
+          countdownDuration--;
+        });
+      }
     });
-    //passing the image path for geotagging and storage
-    // GeotagPage geotag= GeotagPage();
-    await geotag.geotagImage(image!.path);
+  }
+
+  Future<void> onUploadButtonPressed() async {
+    if (!isButtonDisabled) {
+      opengallary();
+      //passing the image path for geotagging and storage
+      // GeotagPage geotag= GeotagPage();
+      await geotag.geotagImage(image!.path);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final buttonWidth = MediaQuery.of(context).size.width;
+
+    // update the UI depending on below variable values
+    final isInit = isAnimating || state == ButtonState.init;
+    final isDone = state == ButtonState.completed;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 241, 238, 238),
+          backgroundColor: Color.fromARGB(235, 180, 180, 180),
           leading: IconButton(
               onPressed: () {
                 Navigator.of(context)
@@ -80,17 +127,17 @@ class _SuggPageState extends State<SuggPage> {
                   return homePage();
                 }));
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_ios,
                 color: Colors.black,
               )),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             side: BorderSide(color: Color.fromARGB(136, 125, 93, 25)),
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(200),
                 bottomRight: Radius.circular(200)),
           ),
-          bottom: PreferredSize(
+          bottom: const PreferredSize(
               preferredSize: Size.fromHeight(150),
               child: Center(
                 child: Column(
@@ -101,7 +148,7 @@ class _SuggPageState extends State<SuggPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const SizedBox(
+                        SizedBox(
                           width: 5,
                         ),
                         Text(
@@ -199,18 +246,13 @@ class _SuggPageState extends State<SuggPage> {
                             controller: descriptionController,
                             maxLines: 7,
                             keyboardType: TextInputType.multiline,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "mandatory";
-                              }
-                            },
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
                               hintText: "Give descrption about your suggestion",
                               hintStyle: TextStyle(
                                 color: Colors.black,
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -227,73 +269,145 @@ class _SuggPageState extends State<SuggPage> {
                     ),
                   ),
                 ),
+//----------------------upload photo----------------------------------------------------
 
-                const SizedBox(
-                  height: 50,
-                ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Center(
-                      child: Column(
-                    children: [
-                      ElevatedButton.icon(
-                          onPressed: () {
-                            opengallary();
-                          },
+                    child: Column(
+                      children: [
+                        Text(
+                          'Wait for $countdownDuration seconds to take next photo',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w200,
+                              color: Color.fromARGB(255, 243, 57, 57)),
+                        ),
+                        SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          onPressed:
+                              isButtonDisabled ? null : onUploadButtonPressed,
                           icon: Icon(Icons.camera_alt_outlined),
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black),
+                            backgroundColor: Colors.black,
+                          ),
                           label: Text(
-                            "upload photo",
+                            "Upload Photo",
                             style: TextStyle(
-                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w100,
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 20,
                             ),
-                          )),
-                      Container(
-                        height: MediaQuery.of(context).size.height *
-                            .2, //images height
-                        // decoration: BoxDecoration(border: Border.all(width: 1)),
-                        padding: EdgeInsets.all(5),
-                        child: imagearray.isEmpty
-                            ? Center(child: Text("no image"))
-                            : GridView.count(
-                                crossAxisCount: 3,
-                                children:
-                                    List.generate(imagearray.length, (index) {
-                                  var img = imagearray[index];
-                                  //  return Container(child: Image.file(img));
-                                  return Container(
-                                      child: Image.file(File(img!.path)));
-                                }),
-                              ),
-                      ),
-                    ],
-                  )),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height *
+                                .2, // images height
+                            padding: EdgeInsets.all(5),
+                            child: imagearray.isEmpty
+                                ? const Center(
+                                    child: Text(
+                                      "No image",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w100,
+                                      ),
+                                    ),
+                                  )
+                                : GridView.count(
+                                    crossAxisCount: 3,
+                                    children: List.generate(
+                                      imagearray.length,
+                                      (index) {
+                                        var img = imagearray[index];
+                                        return Container(
+                                          child: Image.file(File(img!.path)),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
-                //------------------------post---------------------------------------------------------------------------
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        if (formkey.currentState!.validate()) {}
-                      });
-                      addSuggestionToUser();
-                    },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.white),
-                    child: Text(
-                      "post",
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          color: Colors.black,
-                          fontSize: 18),
-                    )),
+//------------------------post---------------------------------------------------------------------------
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(40),
+                  child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      onEnd: () => setState(() {
+                            isAnimating = !isAnimating;
+                          }),
+                      width: state == ButtonState.init ? buttonWidth : 70,
+                      height: 60,
+                      // If Button State is Submiting or Completed  show 'buttonCircular' widget as below
+                      child:
+                          isInit ? buildButton() : circularContainer(isDone)),
+                ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildButton() => ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, shape: const StadiumBorder()),
+        onPressed: () async {
+          addSuggestionToUser();
+          // here when button is pressed
+          // we are changing the state
+          // therefore depending on state our button UI changed.
+          setState(() {
+            state = ButtonState.submitting;
+          });
+
+          //await 2 sec // you need to implement your server response here.
+          await Future.delayed(Duration(seconds: 30));
+          setState(() {
+            state = ButtonState.completed;
+          });
+          await Future.delayed(Duration(seconds: 30));
+          setState(() {
+            state = ButtonState.init;
+          });
+        },
+        child: const Text(
+          'POST',
+          style: TextStyle(color: Colors.black),
+        ),
+      );
+
+  // this is custom Widget to show rounded container
+  // here is state is submitting, we are showing loading indicator on container then.
+  // if it completed then showing a Icon.
+
+  Widget circularContainer(bool done) {
+    final color = done ? Colors.green : Colors.blue;
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      child: Center(
+        child: done
+            ? const Icon(Icons.done, size: 50, color: Colors.white)
+            : const CircularProgressIndicator(
+                color: Colors.white,
+              ),
       ),
     );
   }
