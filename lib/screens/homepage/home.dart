@@ -4,6 +4,10 @@ import 'package:streetpatch/screens/complaints/complaint.dart';
 import 'package:streetpatch/screens/homepage/feed.dart';
 import 'package:streetpatch/screens/trackComplaints/treakfeed.dart';
 import 'package:streetpatch/screens/suggestions/suggestions.dart';
+<<<<<<< HEAD
+=======
+import 'package:streetpatch/screens/trackComplaints/track.dart';
+>>>>>>> bb3492b76dd35b0dfe45b4034d976108b0183237
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -76,7 +80,7 @@ Widget getSelectedWidget({required int index}) {
       break;
 
     default:
-      widget = const TrackFeedPage();
+      widget = const trackpage();
       break;
   }
   return widget;

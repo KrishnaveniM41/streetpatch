@@ -467,8 +467,28 @@ class _PatchViewState extends State<PatchView> {
                     ),
                   ],
                 ),
+<<<<<<< HEAD
               ),
               SizedBox(height: 40),
             ])));
+=======
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              openGoogleMaps(latitude, longitude);
+            },
+            color: Color.fromARGB(255, 240, 105, 123),
+            highlightColor: Colors.amberAccent, //<-- SEE HERE
+            iconSize: 25,
+            icon: Icon(
+              Icons.train,
+            ),
+          )
+        ]),
+      ),
+    );
+>>>>>>> bb3492b76dd35b0dfe45b4034d976108b0183237
   }
 }
