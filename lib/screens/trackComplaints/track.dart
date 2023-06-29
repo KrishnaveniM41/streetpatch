@@ -2,14 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class trackpage extends StatefulWidget {
-   final dynamic snap;
-  final List<String> pictureDataList;
+  const trackpage({super.key});
 
-  const trackpage({
-    Key? key,
-    required this.snap,
-    required this.pictureDataList,
-  }) : super(key: key);
   @override
   State<trackpage> createState() => _trackpageState();
 }
