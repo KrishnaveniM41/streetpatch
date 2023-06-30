@@ -3,6 +3,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:streetpatch/screens/homepage/CarouselSliderFromFirestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+late SharedPreferences prefs;
 
 //import 'feed.dart';
 class PatchView extends StatefulWidget {
@@ -17,27 +20,50 @@ class PatchView extends StatefulWidget {
   final dynamic time;
   final dynamic address;
   final dynamic complaintid;
+  final dynamic userid;
 
-  PatchView({
-    Key? key,
-    required this.snap,
-    required this.pictureDataList,
-    required this.latitude,
-    required this.longitude,
-    required this.city,
-    required this.country,
-    required this.state,
-    required this.date,
-    required this.time,
-    required this.address,
-    required this.complaintid,
-  }) : super(key: key);
+  PatchView(
+      {Key? key,
+      required this.snap,
+      required this.pictureDataList,
+      required this.latitude,
+      required this.longitude,
+      required this.city,
+      required this.country,
+      required this.state,
+      required this.date,
+      required this.time,
+      required this.address,
+      required this.complaintid,
+      required this.userid})
+      : super(key: key);
 
   @override
   _PatchViewState createState() => _PatchViewState();
 }
 
 class _PatchViewState extends State<PatchView> {
+  bool isButtonDisabled = false;
+
+  void _disableButton() {
+    setState(() {
+      isButtonDisabled = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeSharedPreferences();
+  }
+
+  void initializeSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isChecked = prefs.getBool('checkboxState') ?? false;
+    });
+  }
+
   final CarouselController carouselController = CarouselController();
   bool? isChecked = false;
 
@@ -57,14 +83,19 @@ class _PatchViewState extends State<PatchView> {
     }
   }
 
-  void updateFakeCount(complaintid, fakecount) async {
-    fakecount++;
-    FirebaseFirestore.instance
+  void updateFakeCount(bool isChecked) async {
+    int updatedCount =
+        isChecked ? widget.snap['fake'] + 1 : widget.snap['fake'] - 1;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userid)
         .collection('complaints')
-        .doc(complaintid)
-        .update({'fake': 'fakecount'});
+        .doc(widget.complaintid)
+        .update({'fake': updatedCount});
+
     print("fake count updated");
-    print(fakecount);
+    print(updatedCount);
   }
 
   @override
@@ -433,38 +464,31 @@ class _PatchViewState extends State<PatchView> {
                       alignment: Alignment.topLeft,
                       child: Row(
                         children: [
-                          Container(
-                              width: 23,
-                              height: 23,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color.fromARGB(172, 224, 13, 6))),
-                              child: Checkbox(
-                                activeColor: const Color.fromARGB(96, 0, 0, 0),
-                                checkColor: Color.fromARGB(237, 252, 252, 252),
-                                value: isChecked,
-                                onChanged: (newBool) {
-                                  setState(() {
-                                    isChecked = newBool;
-
-                                    updateFakeCount(widget.complaintid,
-                                        widget.snap['fake']);
-                                  });
-                                },
-                              )),
-                          Container(
-                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Text(
-                                'Fake',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 20,
-                                  color: Color.fromARGB(248, 255, 255, 255),
+                          Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.all(10.0),
+                                  backgroundColor: isButtonDisabled
+                                      ? Colors.grey
+                                      : Color.fromARGB(134, 149, 144, 150),
                                 ),
-                              )),
+                                child: Text(
+                                  'Report',
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                                onPressed: isButtonDisabled
+                                    ? null
+                                    : () {
+                                        _disableButton();
+                                        // Add your functionality here
+                                      },
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                    ),
+                    ), //this
                   ],
                 ),
               ),
